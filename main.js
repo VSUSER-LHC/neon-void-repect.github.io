@@ -1,19 +1,12 @@
-import { Player } from "./player.js";
-import { Enemy } from "./enemy.js";
-import { STAGES } from "./stage.js";
-import { SHIPS, ENEMIES } from "./data.js";
-
 let player;
 let enemies = [];
 let cursors;
-let bullets;
-let enemyBullets;
 
 const config = {
     type: Phaser.AUTO,
     width: 960,
     height: 540,
-    backgroundColor: "#000000",
+    backgroundColor: "#000",
 
     physics: {
         default: "arcade",
@@ -31,50 +24,36 @@ const config = {
 
 new Phaser.Game(config);
 
-function preload() {
-
-}
+function preload() {}
 
 function create() {
-
     cursors = this.input.keyboard.createCursorKeys();
 
-    bullets = this.physics.add.group();
-    enemyBullets = this.physics.add.group();
-
-    player = new Player(
-        this,
-        480,
-        450,
-        SHIPS.fighter
-    );
+    player = new Player(this, 480, 400, SHIPS.fighter);
 
     loadStage(this, 1);
 }
 
-function update(time, delta) {
+function update() {
+    player.update(cursors);
 
-    player.update(cursors, bullets, time);
-
-    enemies.forEach(enemy => {
-        enemy.update(player, enemyBullets, time);
+    enemies.forEach(e => {
+        e.update(player);
     });
 }
 
-function loadStage(scene, stageNumber) {
-
+function loadStage(scene, id) {
     enemies = [];
 
-    const stage = STAGES[stageNumber];
+    const stage = STAGES[id];
 
-    stage.enemies.forEach(data => {
-
-        const enemyData = ENEMIES[data.type];
+    stage.enemies.forEach(d => {
+        const enemyData = ENEMIES[d.type];
 
         const enemy = new Enemy(
             scene,
-            data.x,
-            data.y,
+            d.x,
+            d.y,
             enemyData
         );
 
