@@ -1,25 +1,33 @@
+import { Player } from "./player.js";
+import { Enemy } from "./enemy.js";
+import { STAGES } from "./stage.js";
+import { SHIPS, ENEMIES } from "./data.js";
+
 let player;
 let enemies = [];
+
 let cursors;
+let bullets;
+let enemyBullets;
 
 const config = {
-    type: Phaser.AUTO,
-    width: 960,
-    height: 540,
-    backgroundColor: "#000",
+  type: Phaser.AUTO,
+  width: 960,
+  height: 540,
+  backgroundColor: "#000000",
 
-    physics: {
-        default: "arcade",
-        arcade: {
-            debug: false
-        }
-    },
-
-    scene: {
-        preload,
-        create,
-        update
+  physics: {
+    default: "arcade",
+    arcade: {
+      debug: false
     }
+  },
+
+  scene: {
+    preload,
+    create,
+    update
+  }
 };
 
 new Phaser.Game(config);
@@ -27,36 +35,39 @@ new Phaser.Game(config);
 function preload() {}
 
 function create() {
-    cursors = this.input.keyboard.createCursorKeys();
+  cursors = this.input.keyboard.createCursorKeys();
 
-    player = new Player(this, 480, 400, SHIPS.fighter);
+  bullets = this.physics.add.group();
+  enemyBullets = this.physics.add.group();
 
-    loadStage(this, 1);
+  player = new Player(this, 480, 450, SHIPS.fighter, bullets);
+
+  loadStage(this, 1);
 }
 
-function update() {
-    player.update(cursors);
+function update(time, delta) {
+  player.update(cursors, time);
 
-    enemies.forEach(e => {
-        e.update(player);
-    });
+  enemies.forEach(e => {
+    e.update(player, enemyBullets, time);
+  });
 }
 
-function loadStage(scene, id) {
-    enemies = [];
+function loadStage(scene, stageNumber) {
+  enemies = [];
 
-    const stage = STAGES[id];
+  const stage = STAGES[stageNumber];
 
-    stage.enemies.forEach(d => {
-        const enemyData = ENEMIES[d.type];
+  stage.enemies.forEach(data => {
+    const enemyData = ENEMIES[data.type];
 
-        const enemy = new Enemy(
-            scene,
-            d.x,
-            d.y,
-            enemyData
-        );
+    const enemy = new Enemy(
+      scene,
+      data.x,
+      data.y,
+      enemyData
+    );
 
-        enemies.push(enemy);
-    });
+    enemies.push(enemy);
+  });
 }
