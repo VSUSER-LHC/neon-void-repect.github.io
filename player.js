@@ -3,10 +3,7 @@ export class Player {
     this.scene = scene;
     this.speed = shipData.speed;
 
-    // rectangleじゃなくてspriteを使う
-    this.sprite = scene.physics.add.sprite(x, y, null);
-    this.sprite.setDisplaySize(30, 30);
-    this.sprite.setTint(0x00ff00);
+    this.sprite = scene.physics.add.sprite(x, y, "player");
     this.sprite.setCollideWorldBounds(true);
 
     this.bullets = bulletsGroup;
@@ -34,12 +31,10 @@ export class Player {
     const b = this.scene.physics.add.sprite(
       this.sprite.x,
       this.sprite.y - 20,
-      null
+      "bullet"
     );
 
-    b.setDisplaySize(5, 10);
-    b.setTint(0xffffff);
-    b.body.setVelocityY(-400);
+    b.setVelocityY(-400);
 
     this.bullets.add(b);
   }
