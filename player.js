@@ -1,50 +1,21 @@
-export class Enemy {
+export class Player {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
 
-    constructor(scene, x, y, data) {
-
-        this.scene = scene;
-
-        this.data = data;
-
-        this.sprite = scene.add.rectangle(
-            x,
-            y,
-            data.size,
-            data.size,
-            data.color
-        );
-
-        scene.physics.add.existing(this.sprite);
-
-        this.speed = data.speed;
-        this.hp = data.hp;
-
-        this.fireRate = data.fireRate;
-
-        this.lastShot = 0;
+        this.size = 20;
+        this.speed = 3;
     }
 
-    update(player, bullets, time) {
+    update(input) {
+        if (input.left) this.x -= this.speed;
+        if (input.right) this.x += this.speed;
+        if (input.up) this.y -= this.speed;
+        if (input.down) this.y += this.speed;
+    }
 
-        this.sprite.y += this.speed;
-
-        if (time > this.lastShot + this.fireRate) {
-
-            this.lastShot = time;
-
-            const bullet = this.scene.add.rectangle(
-                this.sprite.x,
-                this.sprite.y,
-                6,
-                14,
-                0xff0000
-            );
-
-            this.scene.physics.add.existing(bullet);
-
-            bullet.body.setVelocityY(300);
-
-            bullets.add(bullet);
-        }
+    draw(ctx) {
+        ctx.fillStyle = "cyan";
+        ctx.fillRect(this.x, this.y, this.size, this.size);
     }
 }
