@@ -1,32 +1,26 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Space Rescue Shooter</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Space Game</title>
 
   <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
 
   <style>
     body {
       margin: 0;
-      overflow: hidden;
       background: black;
+      overflow: hidden;
     }
     canvas {
       display: block;
-      margin: 0 auto;
+      margin: auto;
     }
   </style>
 </head>
+
 <body>
-
-<!-- 順番重要 -->
-<script src="./data.js"></script>
-<script src="./stage.js"></script>
-<script src="./player.js"></script>
-<script src="./enemy.js"></script>
-<script src="./main.js"></script>
-
+  <script type="module" src="./main.js"></script>
 </body>
 </html>
