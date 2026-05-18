@@ -1,21 +1,20 @@
-export class Player {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
+class Player {
+    constructor(scene, x, y, data) {
+        this.scene = scene;
 
-        this.size = 20;
-        this.speed = 3;
+        this.sprite = scene.add.rectangle(x, y, 30, 30, 0x00ffff);
+        scene.physics.add.existing(this.sprite);
+
+        this.speed = data.speed;
+        this.hp = data.hp;
     }
 
-    update(input) {
-        if (input.left) this.x -= this.speed;
-        if (input.right) this.x += this.speed;
-        if (input.up) this.y -= this.speed;
-        if (input.down) this.y += this.speed;
-    }
+    update(cursors) {
+        const body = this.sprite;
 
-    draw(ctx) {
-        ctx.fillStyle = "cyan";
-        ctx.fillRect(this.x, this.y, this.size, this.size);
+        if (cursors.left.isDown) body.x -= this.speed;
+        if (cursors.right.isDown) body.x += this.speed;
+        if (cursors.up.isDown) body.y -= this.speed;
+        if (cursors.down.isDown) body.y += this.speed;
     }
 }
