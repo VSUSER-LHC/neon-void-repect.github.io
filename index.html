@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Space Rescue Shooter</title>
 
+  <!-- Phaser（グローバル版） -->
   <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
 
   <style>
@@ -16,13 +17,14 @@
 
     canvas {
       display: block;
-      margin: auto;
+      margin: 0 auto;
     }
   </style>
 </head>
 <body>
 
-<script type="module" src="./main.js"></script>
+  <!-- ES moduleは使わない（ここ重要） -->
+  <script src="./main.js"></script>
 
 </body>
 </html>
