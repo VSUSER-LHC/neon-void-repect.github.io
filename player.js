@@ -1,20 +1,44 @@
-class Player {
-    constructor(scene, x, y, data) {
-        this.scene = scene;
+export class Player {
+  constructor(scene, x, y, shipData, bulletsGroup) {
+    this.scene = scene;
+    this.speed = shipData.speed;
 
-        this.sprite = scene.add.rectangle(x, y, 30, 30, 0x00ffff);
-        scene.physics.add.existing(this.sprite);
+    this.sprite = scene.physics.add.rectangle(x, y, 30, 30, 0x00ff00);
+    this.sprite.setCollideWorldBounds(true);
 
-        this.speed = data.speed;
-        this.hp = data.hp;
+    this.bullets = bulletsGroup;
+    this.lastShot = 0;
+    this.fireRate = shipData.fireRate;
+  }
+
+  update(cursors, time) {
+    const spd = this.speed;
+
+    this.sprite.setVelocity(0);
+
+    if (cursors.left.isDown) this.sprite.setVelocityX(-spd);
+    if (cursors.right.isDown) this.sprite.setVelocityX(spd);
+    if (cursors.up.isDown) this.sprite.setVelocityY(-spd);
+    if (cursors.down.isDown) this.sprite.setVelocityY(spd);
+
+    if (cursors.space.isDown && time > this.lastShot) {
+      this.shoot();
+      this.lastShot = time + this.fireRate;
     }
+  }
 
-    update(cursors) {
-        const body = this.sprite;
+  shoot() {
+    const b = this.scene.physics.add.rectangle(
+      this.sprite.x,
+      this.sprite.y - 20,
+      5,
+      10,
+      0xffffff
+    );
 
-        if (cursors.left.isDown) body.x -= this.speed;
-        if (cursors.right.isDown) body.x += this.speed;
-        if (cursors.up.isDown) body.y -= this.speed;
-        if (cursors.down.isDown) body.y += this.speed;
-    }
+    this.scene.physics.add.existing(b);
+    b.body.setVelocityY(-400);
+
+    this.bullets.add(b);
+  }
 }
