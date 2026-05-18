@@ -32,7 +32,35 @@ const config = {
 
 new Phaser.Game(config);
 
-function preload() {}
+function preload() {
+  // プレイヤー
+  let g = this.add.graphics();
+  g.fillStyle(0x00ff00, 1);
+  g.fillRect(0, 0, 30, 30);
+  g.generateTexture("player", 30, 30);
+  g.destroy();
+
+  // 敵
+  g = this.add.graphics();
+  g.fillStyle(0xff0000, 1);
+  g.fillRect(0, 0, 28, 28);
+  g.generateTexture("enemy", 28, 28);
+  g.destroy();
+
+  // 弾
+  g = this.add.graphics();
+  g.fillStyle(0xffffff, 1);
+  g.fillRect(0, 0, 6, 12);
+  g.generateTexture("bullet", 6, 12);
+  g.destroy();
+
+  // 敵弾
+  g = this.add.graphics();
+  g.fillStyle(0xff8800, 1);
+  g.fillRect(0, 0, 6, 12);
+  g.generateTexture("ebullet", 6, 12);
+  g.destroy();
+}
 
 function create() {
   cursors = this.input.keyboard.createCursorKeys();
@@ -45,7 +73,7 @@ function create() {
   loadStage(this, 1);
 }
 
-function update(time, delta) {
+function update(time) {
   player.update(cursors, time);
 
   enemies.forEach(e => {
